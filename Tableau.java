@@ -14,6 +14,7 @@ public class Tableau extends AbstractCell {
 		super();
 	}
 	
+	@Override
 	public Card isSorted() {
 		//Declare iterators and card pointers
 		Iterator<Card> tabIter = this.iterator();
@@ -28,18 +29,16 @@ public class Tableau extends AbstractCell {
 			if( stackCounter > 1) {
 				// set previous card
 				tabTrailer.hasNext();
-				prevCard = (Card) tabTrailer.next();
-				System.out.println("prevCard " + prevCard);
+				prevCard = tabTrailer.next();
 				// compare for correct suit
 				if (! prevCard.isDifferentColor(thisCard)) { return prevCard; }
 				//compare for correct rank
 				if ( thisCard.getRank() != prevCard.getRank() + 1 ) { return prevCard; }
 			}
 			//set this card
-			thisCard = (Card) tabIter.next();
-			//increment count
+			thisCard = tabIter.next();
+			//increment counts
 			stackCounter++;
-			System.out.println("thisCard " +thisCard);
 		}
 		return super.cell.get(cell.size() - 1);
 	}

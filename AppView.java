@@ -44,40 +44,50 @@ public class AppView extends JFrame{
         c.add(homeCellTitle, constraints);
         
       //Setup cells
-        
-        Iterator<String> iter = model.iterator();
         int i = 7;
         int j = 0;
         
-        while(iter.hasNext()) {
-        	Cell cell = model.getCell(iter.next());
-        	if( cell instanceof Tableau ) {
-        		constraints.gridx = i;
-                constraints.gridy = 2;
-                constraints.weightx = 1;
-                constraints.weighty = 10;
-                constraints.gridwidth = 1;
-                constraints.fill = GridBagConstraints.BOTH;
-                MultiCardPanel topCells = new MultiCardPanel(cell);
-                topCells.setBackground(new Color(37, 149, 37));
-                topCells.setMinimumSize(new Dimension(100, 100));
-                topCells.setSize(new Dimension(200, 200));
-                c.add(topCells, constraints);
-                i--;
-        	} else {
-        		constraints.gridx = j;
-                constraints.gridy = 1;
-                constraints.gridwidth = 1;
-                constraints.weightx = 0;
-                constraints.weighty = 3;
-                constraints.fill = GridBagConstraints.BOTH;
-                SingleCardPanel topCells = new SingleCardPanel(cell);
-                topCells.setBackground(new Color(37, 149, 37));
-                topCells.setMinimumSize(new Dimension(100, 100));
-                topCells.setSize(new Dimension(200, 200));
-                c.add(topCells, constraints);
-                j++;
-        	}
+        for( Cell cell: model.Tableaus ) {
+    		constraints.gridx = i;
+            constraints.gridy = 2;
+            constraints.weightx = 1;
+            constraints.weighty = 10;
+            constraints.gridwidth = 1;
+            constraints.fill = GridBagConstraints.BOTH;
+            MultiCardPanel topCells = new MultiCardPanel(cell);
+            topCells.setBackground(new Color(37, 149, 37));
+            topCells.setMinimumSize(new Dimension(100, 100));
+            topCells.setSize(new Dimension(200, 200));
+            c.add(topCells, constraints);
+            i--;
+        }
+        for( Cell cell: model.HomeCells ) {
+    		constraints.gridx = j;
+            constraints.gridy = 1;
+            constraints.gridwidth = 1;
+            constraints.weightx = 0;
+            constraints.weighty = 3;
+            constraints.fill = GridBagConstraints.BOTH;
+            SingleCardPanel topCells = new SingleCardPanel(cell);
+            topCells.setBackground(new Color(37, 149, 37));
+            topCells.setMinimumSize(new Dimension(100, 100));
+            topCells.setSize(new Dimension(200, 200));
+            c.add(topCells, constraints);
+            j++;
+        }
+        for( Cell cell: model.FreeCells ) {
+    		constraints.gridx = j;
+            constraints.gridy = 1;
+            constraints.gridwidth = 1;
+            constraints.weightx = 0;
+            constraints.weighty = 3;
+            constraints.fill = GridBagConstraints.BOTH;
+            SingleCardPanel topCells = new SingleCardPanel(cell);
+            topCells.setBackground(new Color(37, 149, 37));
+            topCells.setMinimumSize(new Dimension(100, 100));
+            topCells.setSize(new Dimension(200, 200));
+            c.add(topCells, constraints);
+            j++;
         }
 
         // Setup New Game Button

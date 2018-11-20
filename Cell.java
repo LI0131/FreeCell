@@ -77,5 +77,11 @@ public interface Cell extends Iterable<Card>{
 	 * @throws UnsupportedOperationException: if of type HomeCell or FreeCell
 	 */
 	public boolean addAll(ArrayList<Card> cards);
+	
+	/**
+	 * returns the last sorted card in the tableau -- if returns null the whole tableau is sorted
+	 * @return Card or Null
+	 */
+	public Card isSorted();
 
 }

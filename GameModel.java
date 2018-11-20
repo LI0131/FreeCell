@@ -11,7 +11,9 @@ import java.util.*;
 public class GameModel {
 	
 	private Deck deck;
-	private HashMap<String, Cell> gameMap = new HashMap<String, Cell>();
+	public List<Cell> HomeCells = new ArrayList<Cell>();
+	public List<Cell> FreeCells = new ArrayList<Cell>();
+	public List<Cell> Tableaus = new ArrayList<Cell>();
 	private ArrayList<Card> movingCards = new ArrayList<Card>();
 	
 	public GameModel() {
@@ -20,28 +22,15 @@ public class GameModel {
 	}
 	
 	private void instantiateCells() {
-		gameMap.put("Home1", new HomeCell());
-		gameMap.put("Home2", new HomeCell());
-		gameMap.put("Home3", new HomeCell());
-		gameMap.put("Home4", new HomeCell());
-		gameMap.put("Free1", new FreeCell());
-		gameMap.put("Free2", new FreeCell());
-		gameMap.put("Free3", new FreeCell());
-		gameMap.put("Free4", new FreeCell());
-		gameMap.put("Tab1", new Tableau());
-		gameMap.put("Tab2", new Tableau());
-		gameMap.put("Tab3", new Tableau());
-		gameMap.put("Tab4", new Tableau());
-		gameMap.put("Tab5", new Tableau());
-		gameMap.put("Tab6", new Tableau());
-		gameMap.put("Tab7", new Tableau());
-		gameMap.put("Tab8", new Tableau());
+		for (int i = 0; i < 4; i++) { HomeCells.add(new HomeCell()); }
+		for (int i = 0; i < 4; i++) { FreeCells.add(new FreeCell()); }
+		for (int i = 0; i < 8; i++) { Tableaus.add(new Tableau()); }
 	}
 	
 	public void newGame() {
-		for(Cell cell: gameMap.values()) {
-			cell.clear();
-		}
+		for( Cell c: HomeCells ) { c.clear(); }
+		for( Cell c: FreeCells ) { c.clear(); }
+		for( Cell c: Tableaus ) { c.clear(); }
 		this.deck = new Deck();
 		this.deck.shuffle();
 		this.dealDeck();
@@ -51,25 +40,18 @@ public class GameModel {
 		Card card = deck.deal();
 		card.turn();
 		return card;
-	}
-	
-	public Cell getCell(String name) {
-		return gameMap.get(name);
-	}
+	} 
 	
 	public void dealDeck() {
-		List<String> namesList = Arrays.asList("Tab1", "Tab2", "Tab3", "Tab4", "Tab5", "Tab6", "Tab7", "Tab8");
 		int iterCount = 1;
-		
-		for( String name: namesList ) {
+		for( Cell tab : Tableaus ) {
 			ArrayList<Card> cards = new ArrayList<Card>();
-			Cell cell = gameMap.get(name);
-			if( iterCount > 4 ) {
+			if( iterCount <= 4 ) {
 				for(int i = 0; i < 6; i++) { cards.add(this.getDealtCard()); }
-				cell.addAll(cards);
+				tab.addAll(cards);
 			} else {
 				for(int i = 0; i < 7; i++) { cards.add(this.getDealtCard()); }
-				cell.addAll(cards);
+				tab.addAll(cards);
 			}
 			iterCount++;
 		}
@@ -170,27 +152,18 @@ public class GameModel {
 	}
 	
 	public boolean hasWinner() {
-		List<String> namesList = Arrays.asList("Tab1", "Tab2", "Tab3", "Tab4", "Tab5", "Tab6", "Tab7", "Tab8");
-		
-		for(String name: namesList) {
-			Tableau toTest = (Tableau) gameMap.get(name);
-			if( toTest.isSorted() != null ) {
-				return false;
-			}
+		for( Cell toTest: Tableaus ) {
+			if( toTest.isSorted() != null ) { return false; }
 		}
 		return true;
 	}
 	
 	public String toString() {
 		String output = "";
-		for (Cell cell: gameMap.values() ) {
-			output += cell.toString();
-		}
+		for (Cell cell: HomeCells ) { output += cell.toString(); }
+		for (Cell cell: FreeCells ) { output += cell.toString(); }
+		for (Cell cell: Tableaus ) { output += cell.toString(); }
 		return output;
-	}
-	
-	public Iterator<String> iterator() {
-		return this.gameMap.keySet().iterator();
 	}
 
 }

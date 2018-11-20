@@ -30,7 +30,7 @@ public class Tester {
 		System.out.println(home);
 		System.out.println(free);
 		
-		Cell tab1 = game.getCell("Tab1");
+		/*Cell tab1 = game.getCell("Tab1");
 		System.out.println(tab1);
 		Cell tab3 = game.getCell("Tab3");
 		game.moveCards(tab1, tab3);
@@ -44,7 +44,7 @@ public class Tester {
 		Cell tab2 = game.getCell("Tab8");
 		Cell home1 = game.getCell("Home1");
 		game.moveCards(tab2, home1);
-		System.out.println(game.getCell("Home1"));
+		System.out.println(game.getCell("Home1"));*/
 		
 		Iterator<Card> iter = tab.iterator();
 		

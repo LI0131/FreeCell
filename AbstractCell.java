@@ -77,5 +77,9 @@ public abstract class AbstractCell implements Cell {
 	public String toString() {
 		return this.cell.toString();
 	}
+	
+	public Card isSorted() {
+		throw new UnsupportedOperationException("Cell of this type cannot be sorted");
+	}
 
 }
