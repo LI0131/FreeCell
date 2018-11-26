@@ -12,8 +12,4 @@ public class FreeCell extends AbstractCell {
 		super();
 	}
 	
-	public boolean moveCards(Cell fromPile, Cell toPile) {
-		return false;
-	}
-	
 }
