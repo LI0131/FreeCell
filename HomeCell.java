@@ -12,7 +12,7 @@ public class HomeCell extends AbstractCell {
 		super();
 	}
 	
-	public boolean moveCards(Cell fromPile, Cell toPile) {
+	public boolean moveCards(HomeCell fromPile, Cell toPile) {
 		return false;
 	}
 	
