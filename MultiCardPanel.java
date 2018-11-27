@@ -7,8 +7,8 @@ public class MultiCardPanel extends AbstractPanel {
 	/**
      * Constructor for a multi card panel
      */
-	public MultiCardPanel(Cell cell) {
-		super(cell);
+	public MultiCardPanel(Cell cell, ViewInformer viewInformer) {
+		super(cell, viewInformer);
 	}
 	
 	/**
