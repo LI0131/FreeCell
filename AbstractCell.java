@@ -87,6 +87,10 @@ public abstract class AbstractCell implements Cell {
 		return this.cell.iterator();
 	}
 	
+	public ListIterator<Card> iterator(int index){
+		return this.cell.listIterator(index);
+	}
+	
 	public String toString() {
 		return this.cell.toString();
 	}

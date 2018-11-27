@@ -17,28 +17,28 @@ public class Tableau extends AbstractCell {
 	@Override
 	public Card isSorted() {
 		//Declare iterators and card pointers
-		Iterator<Card> tabIter = this.iterator();
-		Iterator<Card> tabTrailer = this.iterator();
+		ListIterator<Card> tabIter = this.iterator(this.size());
+		ListIterator<Card> tabTrailer = this.iterator(this.size());
 		Card prevCard;
 		Card thisCard = null;
 		//set iterator count
-		int stackCounter = 0;
+		int listCounter = 0;
 		//while cards are not equal and iterator has next
-		while( tabIter.hasNext() ) {
+		while( tabIter.hasPrevious() ) {
 			//wait for this card to be set
-			if( stackCounter > 1) {
+			if( listCounter > 1) {
 				// set previous card
-				tabTrailer.hasNext();
-				prevCard = tabTrailer.next();
+				tabTrailer.hasPrevious();
+				prevCard = tabTrailer.previous();
 				// compare for correct suit
 				if (! prevCard.isDifferentColor(thisCard)) { return prevCard; }
 				//compare for correct rank
 				if ( thisCard.getRank() != prevCard.getRank() + 1 ) { return prevCard; }
 			}
 			//set this card
-			thisCard = tabIter.next();
+			thisCard = tabIter.previous();
 			//increment counts
-			stackCounter++;
+			listCounter++;
 		}
 		return super.cell.get(0);
 	}
@@ -49,13 +49,18 @@ public class Tableau extends AbstractCell {
 			//get an array of sorted cards in the tableau as an array list
 			ArrayList<Card> sortedCards = new ArrayList<Card>(); 
 			Card lastSortedCard = fromPile.isSorted();
-			System.out.println(lastSortedCard);
-			Iterator<Card> cellIter = fromPile.iterator();
-			while( cellIter.hasNext() && cellIter.next() != lastSortedCard ) {
-				sortedCards.add(cellIter.next());
+			ListIterator<Card> cellIter = fromPile.iterator(fromPile.size());
+			while( cellIter.hasPrevious() ) {
+				Card nextCard = cellIter.previous();
+				if( nextCard != lastSortedCard ) { 
+					sortedCards.add(nextCard); 
+				} else { 
+					sortedCards.add(nextCard); 
+					break; 
+				}
 			}
 			System.out.println(sortedCards);
-			if( fromPile.getTopCard() == null ) {
+			if( toPile.getTopCard() == null ) {
 				this.movingCards = sortedCards; 
 				System.out.println("is null");
 			} else {
@@ -70,14 +75,24 @@ public class Tableau extends AbstractCell {
 				for( int i = 0; i <= indexToAddTo; i++ ) {
 					this.movingCards.add(sortedCards.get(i));
 				}
-				for( Card card: this.movingCards ) {
-					toPile.add(card);
-					fromPile.remove();
-				}
-				this.movingCards.clear();
-				return true;
 			}
-			return false;
+			
+			if( this.movingCards.size() == 0 ) { return false; }
+			
+			int removeCount = 0;
+			
+			for( int i = this.movingCards.size() - 1; i >= 0; i-- ) {
+				toPile.add(this.movingCards.get(i));
+				System.out.println(toPile);
+				System.out.println(fromPile);
+				removeCount++;
+			}
+			
+			for( int i = 0; i < removeCount; i++ ) { fromPile.remove(); } 
+			
+			this.movingCards.clear();
+			return true;
+			
 		} else {
 			return super.moveCards(fromPile, toPile);
 		}
