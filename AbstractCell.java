@@ -33,7 +33,9 @@ public abstract class AbstractCell implements Cell {
 			System.out.println(movingCards);
 			for( Card card: this.movingCards ) {
 				toPile.add(card);
+				if(fromPile.canRemoveFrom()) { fromPile.remove(); }
 			}
+			this.movingCards.clear();
 			return true;
 		}
 		return false;

@@ -11,8 +11,8 @@ public class SingleCardPanel extends AbstractPanel{
 	/**
      * Constructor for a single card panel
      */
-    public SingleCardPanel(Cell cell){
-    	super(cell);
+    public SingleCardPanel(Cell cell, ViewInformer viewInformer){
+    	super(cell, viewInformer);
     }
 
     /**

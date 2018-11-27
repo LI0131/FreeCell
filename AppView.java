@@ -13,6 +13,8 @@ import java.util.*;
 public class AppView extends JFrame{
 	
     private GameModel model;
+    private AbstractPanel fromPanel;
+    private AppViewInformer viewInformer = new AppViewInformer();
 
     public AppView(GameModel model){
         this.model = model;
@@ -54,26 +56,12 @@ public class AppView extends JFrame{
             constraints.weighty = 10;
             constraints.gridwidth = 1;
             constraints.fill = GridBagConstraints.BOTH;
-            MultiCardPanel topCells = new MultiCardPanel(cell);
+            MultiCardPanel topCells = new MultiCardPanel(cell, viewInformer);
             topCells.setBackground(new Color(37, 149, 37));
             topCells.setMinimumSize(new Dimension(100, 100));
             topCells.setSize(new Dimension(200, 200));
             c.add(topCells, constraints);
             i--;
-        }
-        for( Cell cell: model.HomeCells ) {
-    		constraints.gridx = j;
-            constraints.gridy = 1;
-            constraints.gridwidth = 1;
-            constraints.weightx = 0;
-            constraints.weighty = 3;
-            constraints.fill = GridBagConstraints.BOTH;
-            SingleCardPanel topCells = new SingleCardPanel(cell);
-            topCells.setBackground(new Color(37, 149, 37));
-            topCells.setMinimumSize(new Dimension(100, 100));
-            topCells.setSize(new Dimension(200, 200));
-            c.add(topCells, constraints);
-            j++;
         }
         for( Cell cell: model.FreeCells ) {
     		constraints.gridx = j;
@@ -82,7 +70,21 @@ public class AppView extends JFrame{
             constraints.weightx = 0;
             constraints.weighty = 3;
             constraints.fill = GridBagConstraints.BOTH;
-            SingleCardPanel topCells = new SingleCardPanel(cell);
+            SingleCardPanel topCells = new SingleCardPanel(cell, viewInformer);
+            topCells.setBackground(new Color(37, 149, 37));
+            topCells.setMinimumSize(new Dimension(100, 100));
+            topCells.setSize(new Dimension(200, 200));
+            c.add(topCells, constraints);
+            j++;
+        }
+        for( Cell cell: model.HomeCells ) {
+    		constraints.gridx = j;
+            constraints.gridy = 1;
+            constraints.gridwidth = 1;
+            constraints.weightx = 0;
+            constraints.weighty = 3;
+            constraints.fill = GridBagConstraints.BOTH;
+            SingleCardPanel topCells = new SingleCardPanel(cell, viewInformer);
             topCells.setBackground(new Color(37, 149, 37));
             topCells.setMinimumSize(new Dimension(100, 100));
             topCells.setSize(new Dimension(200, 200));
@@ -105,5 +107,27 @@ public class AppView extends JFrame{
         constraints.fill = GridBagConstraints.NONE;
         c.add(newButton, constraints);
         this.add(c);
+        
     }
+    
+    private class AppViewInformer implements ViewInformer {
+    	
+    	public void panelPressed(AbstractPanel P) {
+    		if( fromPanel == null ) {
+    			fromPanel = P;
+    		} else {
+    			if (fromPanel.makeMove(fromPanel, P)) {
+    				if (model.hasWinner()) { JOptionPane.showMessageDialog(AppView.this, "Winner"); }
+    	    		repaint();
+    			} else {
+    				JOptionPane.showMessageDialog(AppView.this, "Illegal Move");
+    			}
+    			fromPanel = null;
+    		}
+    		repaint();
+    	}
+    	
+    }
+    
+    
 }
