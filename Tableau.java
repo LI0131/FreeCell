@@ -59,12 +59,12 @@ public class Tableau extends AbstractCell {
 					break; 
 				}
 			}
-			System.out.println(sortedCards);
+			
 			if( toPile.getTopCard() == null ) {
 				this.movingCards = sortedCards; 
-				System.out.println("is null");
+			} else if ( fromPile.size() == 1 ) {
+				this.movingCards.add(fromPile.getTopCard());
 			} else {
-				System.out.println("is not null");
 				//add to an existing tableau of cards
 				Card TopOfToPile = toPile.getTopCard();	
 				int indexToAddTo = -1;
