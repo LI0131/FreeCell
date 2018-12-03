@@ -16,4 +16,5 @@ public class FreeCellApp{
         view.setMinimumSize(new Dimension(800, 600));
         view.setVisible(true);
     }
+    
 }

@@ -16,85 +16,94 @@ public class Tableau extends AbstractCell {
 	
 	@Override
 	public Card isSorted() {
-		//Declare iterators and card pointers
-		ListIterator<Card> tabIter = this.iterator(this.size());
-		ListIterator<Card> tabTrailer = this.iterator(this.size());
-		Card prevCard;
-		Card thisCard = null;
-		//set iterator count
-		int listCounter = 0;
-		//while cards are not equal and iterator has next
-		while( tabIter.hasPrevious() ) {
-			//wait for this card to be set
-			if( listCounter > 1) {
-				// set previous card
-				tabTrailer.hasPrevious();
-				prevCard = tabTrailer.previous();
-				// compare for correct suit
-				if (! prevCard.isDifferentColor(thisCard)) { return prevCard; }
-				//compare for correct rank
+		ListIterator<Card> iterator = this.iterator(this.size());
+		
+		int iterCount = 0;
+		
+		while(iterator.hasPrevious()) {
+			iterator.previous();
+			if (iterCount >= 1) { iterator.previous(); }
+			if(iterator.hasPrevious()) {
+				Card thisCard = iterator.previous();
+				iterator.next();
+				Card prevCard = iterator.next(); 
+				
+				iterCount++;
+				
+				if (! thisCard.isDifferentColor(prevCard)) { return prevCard; }
 				if ( thisCard.getRank() != prevCard.getRank() + 1 ) { return prevCard; }
+					
 			}
-			//set this card
-			thisCard = tabIter.previous();
-			//increment counts
-			listCounter++;
 		}
-		return super.cell.get(0);
+		
+		return null;
+		
 	}
 	
 	@Override
-	public boolean moveCards(Cell fromPile, Cell toPile) {
+	public boolean canMoveCards(Cell fromPile, Cell toPile) {
 		if ( fromPile instanceof Tableau && toPile instanceof Tableau ) {
 			//get an array of sorted cards in the tableau as an array list
 			ArrayList<Card> sortedCards = new ArrayList<Card>(); 
 			Card lastSortedCard = fromPile.isSorted();
 			ListIterator<Card> cellIter = fromPile.iterator(fromPile.size());
-			while( cellIter.hasPrevious() ) {
-				Card nextCard = cellIter.previous();
-				if( nextCard != lastSortedCard ) { 
-					sortedCards.add(nextCard); 
-				} else { 
-					sortedCards.add(nextCard); 
-					break; 
+			if( lastSortedCard == null ) {
+				while( cellIter.hasPrevious() ) {
+					sortedCards.add(cellIter.previous());
+				}
+			} else {
+				while( cellIter.hasPrevious() ) {
+					Card nextCard = cellIter.previous();
+					if( nextCard != lastSortedCard ) { 
+						sortedCards.add(nextCard); 
+					} else { 
+						sortedCards.add(nextCard);
+						break; 
+					}
 				}
 			}
 			
 			if( toPile.getTopCard() == null ) {
 				this.movingCards = sortedCards; 
 			} else if ( fromPile.size() == 1 ) {
-				this.movingCards.add(fromPile.getTopCard());
+				Card fromPileTopCard = fromPile.getTopCard();
+				if (toPile.canAddTo(fromPileTopCard)) {
+					this.movingCards.add(fromPile.getTopCard());
+				} else { return false; }
 			} else {
-				//add to an existing tableau of cards
-				Card TopOfToPile = toPile.getTopCard();	
+				int indexInArray = 0;
 				int indexToAddTo = -1;
-				for(int i = sortedCards.size() - 1; i >= 0; i--) {
-					if( TopOfToPile.isGreaterByOne(sortedCards.get(i)) && TopOfToPile.isDifferentColor(sortedCards.get(i))) { indexToAddTo = i; }
+				for( Card card: sortedCards ) {
+					if( toPile.canAddTo(card) ) {
+						indexToAddTo = indexInArray;
+					}
+					indexInArray++;
 				}
 				
+				movingCards.clear();
+				
+				if( indexToAddTo == -1 ) { return false; }
+				
+				//add to an existing tableau of cards
 				for( int i = 0; i <= indexToAddTo; i++ ) {
-					this.movingCards.add(sortedCards.get(i));
+					Card nextCard = sortedCards.get(i);
+					System.out.println("Next Card: " + nextCard);
+					this.movingCards.add(nextCard);
+					System.out.println("MC: " + movingCards);
 				}
+				
+				System.out.println("Sorted Cards: " + sortedCards);
+				System.out.println("MC: " + movingCards);
+				System.out.println("Index: " + indexToAddTo);
+				
 			}
 			
 			if( this.movingCards.size() == 0 ) { return false; }
 			
-			int removeCount = 0;
-			
-			for( int i = this.movingCards.size() - 1; i >= 0; i-- ) {
-				toPile.add(this.movingCards.get(i));
-				System.out.println(toPile);
-				System.out.println(fromPile);
-				removeCount++;
-			}
-			
-			for( int i = 0; i < removeCount; i++ ) { fromPile.remove(); } 
-			
-			this.movingCards.clear();
 			return true;
 			
 		} else {
-			return super.moveCards(fromPile, toPile);
+			return super.canMoveCards(fromPile, toPile);
 		}
 	}
 	

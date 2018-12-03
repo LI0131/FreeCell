@@ -25,20 +25,29 @@ public abstract class AbstractCell implements Cell {
 		return this.cell.get(this.cell.size() - 1);
 	}
 	
-	public boolean moveCards(Cell fromPile, Cell toPile) {
-		Card TopOfFromPile = fromPile.getTopCard();
-		if( TopOfFromPile == null ) { return false; }
-		if ( toPile.canAddTo(TopOfFromPile) ) {
-			this.movingCards.add(TopOfFromPile);
-			System.out.println(movingCards);
-			for( Card card: this.movingCards ) {
-				toPile.add(card);
-				if(fromPile.canRemoveFrom()) { fromPile.remove(); }
-			}
-			this.movingCards.clear();
+	public boolean canMoveCards(Cell fromPile, Cell toPile) {
+		this.movingCards.clear();
+		Card topOfFromPile = fromPile.getTopCard();
+		if( topOfFromPile == null ) { return false; }
+		
+		if ( toPile.canAddTo(topOfFromPile) ) {
+			this.movingCards.add(topOfFromPile);
 			return true;
 		}
 		return false;
+	}
+	
+	public void moveCards(Cell fromPile, Cell toPile) {
+		int removeCount = 0;
+		
+		for( int i = this.movingCards.size() - 1; i >= 0; i-- ) {
+			toPile.add(this.movingCards.get(i));
+			removeCount++;
+		}
+		
+		for( int i = 0; i < removeCount; i++ ) { fromPile.remove(); } 
+		
+		this.movingCards.clear();
 	}
 	
 	public void clear() {

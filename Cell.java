@@ -15,7 +15,9 @@ public interface Cell extends Iterable<Card>{
 	
 	public Card getTopCard();
 	
-	public boolean moveCards(Cell fromPile, Cell toPile);
+	public boolean canMoveCards(Cell fromPile, Cell toPile);
+	
+	public void moveCards(Cell fromPile, Cell toPile);
 
 	/**
 		* Clears the Cell object of all Card objects.
