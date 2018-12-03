@@ -31,7 +31,7 @@ public class SingleCardPanel extends AbstractPanel{
     		Card card = this.cell.getTopCard();
     		image = card.getImage();
 			int x = (getWidth() - image.getIconWidth()) / 2;
-			int y = ((getHeight()) - image.getIconHeight()) / 2;
+			int y = (getHeight() - image.getIconHeight()) / 100;
 			image.paintIcon(this, g, x, y);
     	}
 

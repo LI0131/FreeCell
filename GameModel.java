@@ -15,6 +15,7 @@ public class GameModel {
 	public List<Cell> FreeCells = new ArrayList<Cell>();
 	public List<Cell> Tableaus = new ArrayList<Cell>();
 	private ArrayList<Card> movingCards = new ArrayList<Card>();
+	private int moveCount = 0;
 	
 	public GameModel() {
 		this.instantiateCells();
@@ -33,6 +34,7 @@ public class GameModel {
 		for( Cell c: Tableaus ) { c.clear(); }
 		this.deck = new Deck();
 		this.deck.shuffle();
+		this.moveCount = 0;
 		this.dealDeck();
 	}
 	
@@ -57,105 +59,65 @@ public class GameModel {
 		}
 	}
 	
-	/*public boolean moveOneCard(Cell fromPile, Cell toPile) {
-		
-		Card movingCard;
-		
-		if ( fromPile.canRemoveFrom() == false ) {
-			return false;
-		} else { movingCard = fromPile.remove(); }
-		System.out.println(movingCard);
-		
-		if( toPile.canAddTo(movingCard) ) {
-			toPile.add(movingCard);
-			return true;
-		} else { return false; }
-		
-	}*/
-	
-	/*public boolean moveManyCards(Tableau fromPile, Cell toPile, Card highestMovingCard) {
-		if( fromPile.isSorted(highestMovingCard) ) {
-			if ( toPile.canAddTo(highestMovingCard) ) {
-				toPile.add(highestMovingCard);
-				this.movingCards.push(fromPile.remove());
-				while( this.movingCards.peek() != highestMovingCard ) {
-					this.movingCards.push(fromPile.remove());
-				}
-				while( !this.movingCards.isEmpty() ) {
-					toPile.add(this.movingCards.pop());
-				}
-				fromPile.remove();
-				return true;
-			}
-			return false;
-		} else { return false; }
-	}*/
-	
-	private int getIndexOfCard(ArrayList<Card> list, Card checkCard) {
-		for(int i = list.size() - 1; i >= 0; i--) {
-			if( checkCard.isGreaterByOne(list.get(i)) && checkCard.isDifferentColor(list.get(i))) { return i; }
-		}
-		return -1;
-	}
-	
-	public boolean moveCards(Cell fromPile, Cell toPile) {
-		
-		//make sure fromPile is non-empty
-		if( fromPile.getTopCard() == null ) { return false; }
-		
-		//get the Card at the top of the piles
-		Card topOfToPile = toPile.getTopCard();
-		Card topOfFromPile = fromPile.getTopCard();
-		
-		//if fromPile is a tableau
-		if( fromPile instanceof Tableau ) {
-			//get an array of sorted cards in the tableau as an array list
-			ArrayList<Card> sortedCards = new ArrayList<Card>(); 
-			Card lastSortedCard = ((Tableau) fromPile).isSorted();
-			Iterator cellIter = fromPile.iterator();
-			while( cellIter.hasNext() && cellIter.next() != lastSortedCard ) {
-				sortedCards.add((Card) cellIter.next());
-			}
-			
-			//add to an empty Cell
-			if( toPile instanceof Tableau ) {
-				if( topOfToPile == null ) { 
-					this.movingCards = sortedCards; 
-				} else {
-					//add to an existing tableau of cards
-					int indexToAddTo = this.getIndexOfCard(sortedCards, topOfToPile);
-					if( indexToAddTo == -1 ) { return false; }
-					
-					for( int i = 0; i <= indexToAddTo; i++ ) {
-						this.movingCards.add(sortedCards.get(i));
-					}
-				}
-				
-			} else {
-				if (toPile.canAddTo(topOfFromPile)) {
-					this.movingCards.add(topOfFromPile);
-				} else {
-					return false;
-				}
-			}
-					
-		//for when the fromPile is not a tableau 
-		} else {
-			if ( !fromPile.canRemoveFrom() ) { return false; }
-			
-			//compare top of each pile and add if possible
-			if ( topOfToPile.isGreaterByOne(topOfFromPile) && topOfToPile.isDifferentColor(topOfFromPile) ) {
-				this.movingCards.add(topOfFromPile);
-			} else { return false; }
-		}
-		return true;
-	}
-	
 	public boolean hasWinner() {
 		for( Cell toTest: Tableaus ) {
 			if( toTest.isSorted() != null ) { return false; }
 		}
 		return true;
+	}
+	
+	public boolean hasLoser() {
+		
+		for( int i = 0; i < Tableaus.size(); i++ ) {
+			Cell fromPileToTest = Tableaus.get(i);
+			for( int j = i + 1; j < Tableaus.size(); j++ ) {
+				Cell toPileToTest = Tableaus.get(j);
+				if( fromPileToTest.canMoveCards(fromPileToTest, toPileToTest) ) { return false; }
+			}
+		}
+		
+		for( int i = 0; i < Tableaus.size(); i++ ) {
+			Cell fromPileToTest = Tableaus.get(i);
+			for( int j = 0; j < FreeCells.size(); j++ ) {
+				Cell toPileToTest =  FreeCells.get(j);
+				if( fromPileToTest.canMoveCards(fromPileToTest, toPileToTest) ) { return false; }
+			}
+		}
+		
+		System.out.println("2");
+		
+		for( int i = 0; i < FreeCells.size(); i++ ) {
+			Cell fromPileToTest = FreeCells.get(i);
+			for( int j = 0; j < Tableaus.size(); j++ ) {
+				Cell toPileToTest =  Tableaus.get(j);
+				if( fromPileToTest.canMoveCards(fromPileToTest, toPileToTest) ) { return false; }
+			}
+		}
+		
+		System.out.println("3");
+		
+		for( int i = 0; i < FreeCells.size(); i++ ) {
+			Cell fromPileToTest = FreeCells.get(i);
+			for( int j = 0; j < HomeCells.size(); j++ ) {
+				Cell toPileToTest =  HomeCells.get(j);
+				if( fromPileToTest.canMoveCards(fromPileToTest, toPileToTest) ) { return false; }
+			}
+		}
+		
+		System.out.println("4");
+		
+		for( int i = 0; i < Tableaus.size(); i++ ) {
+			Cell fromPileToTest = Tableaus.get(i);
+			for( int j = 0; j < HomeCells.size(); j++ ) {
+				Cell toPileToTest =  HomeCells.get(j);
+				if( fromPileToTest.canMoveCards(fromPileToTest, toPileToTest) ) { return false; }
+			}
+		}
+		
+		System.out.println("5");
+		
+		return true;
+		
 	}
 	
 	public String toString() {
@@ -165,5 +127,14 @@ public class GameModel {
 		for (Cell cell: Tableaus ) { output += cell.toString(); }
 		return output;
 	}
+	
+	public String getMoveCount() {
+		return Integer.toString(this.moveCount);
+	}
+	
+	public void incMoveCount() {
+		this.moveCount ++;
+	}
+
 
 }

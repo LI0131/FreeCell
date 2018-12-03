@@ -12,8 +12,11 @@ public class HomeCell extends AbstractCell {
 		super();
 	}
 	
-	public boolean moveCards(HomeCell fromPile, Cell toPile) {
-		return false;
+	@Override
+	public boolean canMoveCards(Cell fromPile, Cell toPile) {
+		if( fromPile instanceof HomeCell ) {
+			return false;
+		} else { return super.canMoveCards(fromPile, toPile); }
 	}
 	
 	@Override

@@ -29,7 +29,10 @@ abstract public class AbstractPanel extends JPanel {
 	public boolean makeMove(AbstractPanel fromPanel, AbstractPanel toPanel) {
 		Cell fromPile = fromPanel.cell;
 		Cell toPile = toPanel.cell;
-		return fromPile.moveCards(fromPile, toPile);
+		if (fromPile.canMoveCards(fromPile, toPile)) {
+			fromPile.moveCards(fromPile, toPile);
+			return true;
+		} else { return false; }
 	}
 	
 	private class PanelListener extends MouseAdapter {
