@@ -126,6 +126,7 @@ public class AppView extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				model.newGame();
 				th.restart();
+				timer.restart();
 	    		moveCountTitle.setText("Move Count: " + model.getMoveCount());
 				AppView.this.repaint();
             }});
