@@ -1,3 +1,5 @@
+package model;
+
 /**
 * Implements the necessary methods for the Free Cell type
 * @author Liam McCann

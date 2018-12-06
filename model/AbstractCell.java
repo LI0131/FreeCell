@@ -1,4 +1,7 @@
+package model;
+
 import java.util.*;
+
 /**
 * This file implements the necessary cell methods for all cell types
 * @author Liam McCann

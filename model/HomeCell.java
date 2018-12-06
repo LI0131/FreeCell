@@ -1,3 +1,5 @@
+package model;
+
 /**
 * Implements the necessary methods for the Home Cell type
 * @author Liam McCann

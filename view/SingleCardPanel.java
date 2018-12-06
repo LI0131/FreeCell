@@ -1,5 +1,9 @@
+package view;
+
 import javax.swing.*;
 import java.awt.*;
+import model.Cell;
+import model.Card;
 
 /**
  * Represents the GUI component for painting an image of a playing card.

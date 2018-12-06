@@ -1,4 +1,7 @@
+package model;
+
 import java.util.*;
+import model.*;
 
 /**
 * Implements the necessary methods for the Game Model
