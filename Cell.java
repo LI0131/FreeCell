@@ -15,8 +15,15 @@ public interface Cell extends Iterable<Card>{
 	
 	public Card getTopCard();
 	
+    /**
+        * Check if the cards can be moved from one cell to another
+        * @returns true or false
+        */
 	public boolean canMoveCards(Cell fromPile, Cell toPile);
-	
+    /**
+        * Moves the cards in the movingCards array to the toPile and removes the same number of
+        * cards from the fromPile
+        */
 	public void moveCards(Cell fromPile, Cell toPile);
 
 	/**
