@@ -1,10 +1,13 @@
+package view;
+
 import javax.swing.*;
 import javax.swing.Timer;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
+import model.GameModel;
+import model.Cell;
+import model.Card;
 
 /**
  * The main window for the game of FreeCell.
@@ -197,6 +200,7 @@ public class AppView extends JFrame{
     				model.incMoveCount();
     	    		moveCountTitle.setText("Move Count: " + model.getMoveCount());
     				if (model.hasWinner()) { JOptionPane.showMessageDialog(AppView.this, "Winner\n It took " + model.getMoveCount() + " moves."); }
+				if (model.hasLoser()) { JOptionPane.showMessageDialog(AppView.this, "Loser"); }
     	    		repaint();
     			} else {
     				if (model.hasLoser()) { JOptionPane.showMessageDialog(AppView.this, "Loser"); }

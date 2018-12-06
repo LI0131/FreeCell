@@ -1,6 +1,10 @@
+package view;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
+import model.Cell;
+import model.Card;
 
 public class MultiCardPanel extends AbstractPanel {
 	
