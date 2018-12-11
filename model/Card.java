@@ -1,7 +1,6 @@
 package model;
 
 import javax.swing.*;
-import DECK.*;
 
 /**
  * Represents a playing card with a suit,
