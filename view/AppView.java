@@ -189,28 +189,32 @@ public class AppView extends JFrame{
     
     
     private class AppViewInformer implements ViewInformer {
-    	
-    	public void panelPressed(AbstractPanel P) {
-    		if( fromPanel == null ) {
-    			fromPanel = P;
-    		} else if ( fromPanel == P ) {
-    			fromPanel = P;
-    		} else {
-    			if (fromPanel.makeMove(fromPanel, P)) {
-    				model.incMoveCount();
-    	    		moveCountTitle.setText("Move Count: " + model.getMoveCount());
-    				if (model.hasWinner()) { JOptionPane.showMessageDialog(AppView.this, "Winner\n It took " + model.getMoveCount() + " moves."); }
-				if (model.hasLoser()) { JOptionPane.showMessageDialog(AppView.this, "Loser"); }
-    	    		repaint();
-    			} else {
-    				if (model.hasLoser()) { JOptionPane.showMessageDialog(AppView.this, "Loser"); }
-    				JOptionPane.showMessageDialog(AppView.this, "Illegal Move");
-    			}
-    			fromPanel = null;
-    		}
-    		repaint();
-    	}
-    	
+        
+        public void panelPressed(AbstractPanel P) {
+            if( fromPanel == null ) {
+                fromPanel = P;
+                fromPanel.setBackground(Color.red);
+            } else if ( fromPanel == P ) {
+                fromPanel.setBackground(new Color(37, 149, 37));
+                fromPanel = null;
+            } else {
+                if (fromPanel.makeMove(fromPanel, P)) {
+                    model.incMoveCount();
+                    moveCountTitle.setText("Move Count: " + model.getMoveCount());
+                    if (model.hasWinner()) { JOptionPane.showMessageDialog(AppView.this, "Winner\n It took " + model.getMoveCount() + " moves."); }
+                    repaint();
+                } else {
+                    P.setBackground(Color.red);
+                    if (model.hasLoser()) { JOptionPane.showMessageDialog(AppView.this, "Loser"); }
+                    JOptionPane.showMessageDialog(AppView.this, "Illegal Move");
+                }
+                fromPanel.setBackground(new Color(37, 149, 37));
+                P.setBackground(new Color(37, 149, 37));
+                fromPanel = null;
+            }
+            repaint();
+        }
+        
     }
     
 }
