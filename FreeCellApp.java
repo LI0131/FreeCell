@@ -1,5 +1,7 @@
 import java.awt.Dimension;
 import javax.swing.JFrame;
+import model.GameModel;
+import view.AppView;
 
 /**
  * Generic main method template for any GUI-based application.
@@ -16,4 +18,5 @@ public class FreeCellApp{
         view.setMinimumSize(new Dimension(800, 600));
         view.setVisible(true);
     }
+    
 }

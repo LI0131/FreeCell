@@ -1,5 +1,8 @@
+package model;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
 	* The <code>Cell</code> interface represents the various types
@@ -14,7 +17,9 @@ public interface Cell extends Iterable<Card>{
 	
 	public Card getTopCard();
 	
-	public boolean moveCards(Cell fromPile, Cell toPile);
+	public boolean canMoveCards(Cell fromPile, Cell toPile);
+	
+	public void moveCards(Cell fromPile, Cell toPile);
 
 	/**
 		* Clears the Cell object of all Card objects.
@@ -63,6 +68,12 @@ public interface Cell extends Iterable<Card>{
 		* @return The iterator object of Cell object.
 		*/
 	public Iterator<Card> iterator();
+	
+	/**
+	 	* Returns an ListIterator on the Cell object.
+	 	* @return The iterator object of Cell object.
+	 	*/
+	public ListIterator<Card> iterator(int index);
 
 	/**
 		* Creates a string representation of the Cell object.

@@ -1,5 +1,9 @@
+package view;
+
 import javax.swing.*;
 import java.awt.*;
+import model.Cell;
+import model.Card;
 
 /**
  * Represents the GUI component for painting an image of a playing card.
@@ -11,8 +15,8 @@ public class SingleCardPanel extends AbstractPanel{
 	/**
      * Constructor for a single card panel
      */
-    public SingleCardPanel(Cell cell){
-    	super(cell);
+    public SingleCardPanel(Cell cell, ViewInformer viewInformer){
+    	super(cell, viewInformer);
     }
 
     /**
@@ -31,7 +35,7 @@ public class SingleCardPanel extends AbstractPanel{
     		Card card = this.cell.getTopCard();
     		image = card.getImage();
 			int x = (getWidth() - image.getIconWidth()) / 2;
-			int y = ((getHeight()) - image.getIconHeight()) / 2;
+			int y = (getHeight() - image.getIconHeight()) / 100;
 			image.paintIcon(this, g, x, y);
     	}
 

@@ -1,3 +1,5 @@
+package model;
+
 import java.util.*;
 
 /**
@@ -45,6 +47,16 @@ public class Tester {
 		Cell home1 = game.getCell("Home1");
 		game.moveCards(tab2, home1);
 		System.out.println(game.getCell("Home1"));*/
+		
+		//will get a certain cell from the panel
+		//we can use this cell to specify the correct method
+		Cell cell = free;
+		cell.moveCards(cell, tab);
+		System.out.println("1");
+		
+		cell = tab;
+		cell.moveCards(cell, free);
+		System.out.println(free);
 		
 		Iterator<Card> iter = tab.iterator();
 		

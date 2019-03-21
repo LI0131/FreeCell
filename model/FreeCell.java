@@ -1,3 +1,5 @@
+package model;
+
 /**
 * Implements the necessary methods for the Free Cell type
 * @author Liam McCann
@@ -10,10 +12,6 @@ public class FreeCell extends AbstractCell {
 	
 	public FreeCell() {
 		super();
-	}
-	
-	public boolean moveCards(Cell fromPile, Cell toPile) {
-		return false;
 	}
 	
 }
